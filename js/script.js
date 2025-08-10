@@ -2,42 +2,31 @@ AOS.init({
 	once: true,
     duration: 600,
 });
-const header = document.querySelector(".header");
-const headerBottom = header.querySelector(".header__bottom");
-const headerProducts = header.querySelector(".header__products");
-const headerContent = header.querySelector(".header__content");
-const headerBlockFirst = headerContent.querySelector(".header__block:first-child");
-const headerBottomParent = headerBottom.parentNode;
-const headerBottomNext = headerBottom.nextElementSibling;
-const headerBlockFirstParent = headerBlockFirst.parentNode;
-const headerBlockFirstNext = headerBlockFirst.nextElementSibling;
-function moveBlocks() {
-    if (window.innerWidth < 768) {
-        if (!headerProducts.contains(headerBottom)) {
-            headerProducts.appendChild(headerBottom);
-        }
-        if (!headerProducts.contains(headerBlockFirst)) {
-            headerProducts.appendChild(headerBlockFirst);
-        }
-    } else {
-        if (headerBottom.parentNode !== headerBottomParent) {
-            if (headerBottomNext) {
-                headerBottomParent.insertBefore(headerBottom, headerBottomNext);
-            } else {
-                headerBottomParent.appendChild(headerBottom);
-            }
-        }
-        if (headerBlockFirst.parentNode !== headerBlockFirstParent) {
-            if (headerBlockFirstNext) {
-                headerBlockFirstParent.insertBefore(headerBlockFirst, headerBlockFirstNext);
-            } else {
-                headerBlockFirstParent.appendChild(headerBlockFirst);
-            }
-        }
+handleHeaderBlocks();
+window.addEventListener('resize', handleHeaderBlocks);
+function handleHeaderBlocks() {
+  const headerContent = document.querySelector('.header__content');
+  const mobileBlock = document.querySelector('.header__block-mobile');
+  const headerBottomContainer = document.querySelector('.header__bottom .container');
+  if (!headerContent || !mobileBlock || !headerBottomContainer) return;
+  if (window.innerWidth < 768) {
+    if (!headerBottomContainer.contains(mobileBlock)) {
+      headerBottomContainer.appendChild(mobileBlock);
     }
+  } else {
+    if (!headerContent.contains(mobileBlock)) {
+      const secondBlock = headerContent.querySelectorAll('.header__block:not(.header__block-mobile)')[0];
+      if (secondBlock) {
+        headerContent.insertBefore(mobileBlock, secondBlock);
+      } else {
+        headerContent.appendChild(mobileBlock);
+      }
+    }
+  }
 }
-moveBlocks();
-window.addEventListener("resize", moveBlocks);
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -347,11 +336,26 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  const headerBurger = document.querySelector('.header__burger');
-  const headerProducts = document.querySelector('.header__products');
-  headerBurger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    headerProducts.classList.toggle('active');
-    document.querySelector('.body').classList.toggle('no-scroll');
-  });
+    const headerProductsOpenClose = document.querySelectorAll('.header__products-open, .header__products-close');
+    const headerProducts = document.querySelector('.header__products');
+
+    headerProductsOpenClose.forEach(element => {
+        element.addEventListener('click', (e) => {
+            e.stopPropagation();
+            headerProducts.classList.toggle('active');
+            document.querySelector('.body').classList.toggle('no-scroll');
+        });
+    }); 
+
+    const headerBurger = document.querySelectorAll('.header__burger, .header__bottom-close');
+    const headerMenu = document.querySelector('.header__bottom');
+
+    headerBurger.forEach(element => {
+        element.addEventListener('click', (e) => {
+            e.stopPropagation();
+            headerMenu.classList.toggle('active');
+            document.querySelector('.body').classList.toggle('no-scroll');
+        });
+    }); 
+  
 });
