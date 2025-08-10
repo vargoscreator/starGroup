@@ -4,7 +4,7 @@ AOS.init({
 });
 const header = document.querySelector(".header");
 const headerBottom = header.querySelector(".header__bottom");
-const headerLeftInner = header.querySelector(".header__left-inner");
+const headerProducts = header.querySelector(".header__products");
 const headerContent = header.querySelector(".header__content");
 const headerBlockFirst = headerContent.querySelector(".header__block:first-child");
 const headerBottomParent = headerBottom.parentNode;
@@ -13,11 +13,11 @@ const headerBlockFirstParent = headerBlockFirst.parentNode;
 const headerBlockFirstNext = headerBlockFirst.nextElementSibling;
 function moveBlocks() {
     if (window.innerWidth < 768) {
-        if (!headerLeftInner.contains(headerBottom)) {
-            headerLeftInner.appendChild(headerBottom);
+        if (!headerProducts.contains(headerBottom)) {
+            headerProducts.appendChild(headerBottom);
         }
-        if (!headerLeftInner.contains(headerBlockFirst)) {
-            headerLeftInner.appendChild(headerBlockFirst);
+        if (!headerProducts.contains(headerBlockFirst)) {
+            headerProducts.appendChild(headerBlockFirst);
         }
     } else {
         if (headerBottom.parentNode !== headerBottomParent) {
@@ -348,26 +348,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const headerBurger = document.querySelector('.header__burger');
-  const headerLeft = document.querySelector('.header__left');
-  const headerLeftInner = document.querySelector('.header__left-inner');
-  const headerLeftClose = document.querySelector('.header__left-close');
+  const headerProducts = document.querySelector('.header__products');
   headerBurger.addEventListener('click', (e) => {
     e.stopPropagation();
-    headerLeft.classList.add('active');
-  });
-  headerLeftClose.addEventListener('click', () => {
-    headerLeft.classList.remove('active');
-  });
-
-  document.addEventListener('click', (e) => {
-    if (
-      headerLeft.classList.contains('active') &&
-      !headerLeftInner.contains(e.target) &&
-      e.target !== headerBurger
-    ) {
-      headerLeft.classList.remove('active');
-    }
+    headerProducts.classList.toggle('active');
+    document.querySelector('.body').classList.toggle('no-scroll');
   });
 });
-
-
