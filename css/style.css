@@ -2101,9 +2101,6 @@ main.main{
     min-width: 83px;
     filter: drop-shadow(0 15px 15px #CCBCFF);
 }
-.types__result:not(.active){
-    display: none;
-}
 .types__result{
     display: flex;
     gap: 50px;
@@ -2127,6 +2124,9 @@ main.main{
 .types__result-content{
     max-width: 648px;
     width: 100%;
+}
+.types__result-content:not(.active){
+    display: none;
 }
 .types__result-item{
     position: relative;
@@ -2158,9 +2158,37 @@ main.main{
 .types__result-item + .types__result-item{
     margin-top: 30px;
 }
+
+.types__result-image{
+    position: relative;
+}
+.types__result-video {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 51%;
+    left: 53.2%;
+    transform: translate(-54.1%, -41.7%);
+    width: 61%;
+    height: 36%;
+    overflow: hidden;
+}
+.types__result-video video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
 @media (max-width: 1279px) {
     .types{
         padding: 120px 0;
+    }
+    .types__result-image{
+        max-width: 480px;
+    }
+    .types__result-video {
+        transform: translate(-52.1%, -41.7%);
+        width: 96%;
     }
 }
 @media (max-width: 999px) {
@@ -2184,6 +2212,12 @@ main.main{
     .types__result-image{
         border-radius: 20px;
         height: 450px;
+        max-width: 100%;
+    }
+    .types__result-video {
+        transform: translate(-54.6%, -41.7%);
+        width: 61.2%;
+        height: 46%;
     }
 }
 @media (max-width: 767px) {
@@ -2195,7 +2229,11 @@ main.main{
         margin: 0 -40px;
     }
     .types__result-image{
-        height: 370px;
+        height: 300px;
+    }
+    .types__result-video {
+        width: 62.2%;
+        height: 42%;
     }
 }
 @media (max-width: 479px) {
@@ -2214,6 +2252,9 @@ main.main{
         width: 37px;
         height: 37px;
         min-width: 37px;
+    }
+    .types__result-video {
+        height: 37%;
     }
 }
 /* advantages */
