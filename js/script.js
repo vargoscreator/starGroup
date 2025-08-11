@@ -137,7 +137,7 @@ document.querySelectorAll('.types__selects-btn').forEach(button => {
     const type = button.getAttribute('data-types');
     document.querySelectorAll('.types__selects-btn').forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
-    document.querySelectorAll('.types__result-content').forEach(result => {
+    document.querySelectorAll('.types__result').forEach(result => {
       if (result.getAttribute('data-types-result') === type) {
         result.classList.add('active');
       } else {
