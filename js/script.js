@@ -9,7 +9,7 @@ function handleHeaderBlocks() {
   const mobileBlock = document.querySelector('.header__block-mobile');
   const headerBottomContainer = document.querySelector('.header__bottom .container');
   if (!headerContent || !mobileBlock || !headerBottomContainer) return;
-  if (window.innerWidth < 768) {
+  if (window.innerWidth < 1000) {
     if (!headerBottomContainer.contains(mobileBlock)) {
       headerBottomContainer.appendChild(mobileBlock);
     }
@@ -205,32 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-document.querySelectorAll('.config__range').forEach(rangeWrapper => {
-  const slider = rangeWrapper.querySelector('input[type="range"]');
-  const valueSpan = rangeWrapper.querySelector('.config__range-value');
-  const valueText = valueSpan.querySelector('span');
-  function updateSlider() {
-    const min = +slider.min;
-    const max = +slider.max;
-    const val = +slider.value;
-    const percent = ((val - min) / (max - min)) * 100;
-    valueText.textContent = `${val} см`;
-    const offset = 0;
-    valueSpan.style.left = `calc(${percent}% - ${offset}px)`;
-  }
-  function updateSlider() {
-    const min = +slider.min;
-    const max = +slider.max;
-    const val = +slider.value;
-    const percent = ((val - min) / (max - min)) * 100;
-    slider.style.setProperty('--value', val);
-    valueText.textContent = `${val} см`;
-    valueSpan.style.left = `calc(${percent}% + (${8 - percent * 0.15}px))`;
-  }
-  slider.addEventListener('input', updateSlider);
-  updateSlider(); 
-});
-
 document.querySelectorAll('.reviews__slide-show').forEach(btn => {
   btn.addEventListener('click', () => {
     const img = btn.closest('.reviews__slide-image').querySelector('img');
@@ -254,6 +228,108 @@ document.querySelectorAll('.faq__item-title').forEach(title => {
             item.classList.add('active');
         }
     });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const steps = document.querySelectorAll('.stepsled__line-num');
+    const stepsBlocks = document.querySelectorAll('.stepsled__form-block');
+    const form = document.querySelector('.stepsled__form');
+    const formImages = document.querySelectorAll('.stepsled__form-right .stepsled__form-image');
+    let currentStep = 0;
+
+    function showStep(index) {
+        if (index < 0 || index >= stepsBlocks.length) return;
+        stepsBlocks.forEach((block, i) => {
+            const isActive = i === index;
+            block.classList.toggle('active', isActive);
+            const inputs = block.querySelectorAll('input, select, textarea, button');
+            inputs.forEach(input => {
+                input.disabled = !isActive;
+            });
+        });
+
+        if (steps.length) {
+            steps.forEach((step, i) => {
+                step.classList.toggle('active', i <= index);
+            });
+        }
+        if (formImages.length) {
+            formImages.forEach((img, i) => {
+                img.classList.toggle('active', i === index);
+            });
+        }
+        currentStep = index;
+    }
+
+    function sendForm() {
+        const formData = new FormData(form);
+        return fetch('send.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.text())
+        .then(() => {
+            showStep(stepsBlocks.length - 1);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    }
+
+    stepsBlocks.forEach((block, i) => {
+        const prevBtn = block.querySelector('.stepsled__form-prev');
+        const nextBtn = block.querySelector('.stepsled__form-next');
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    showStep(currentStep - 1);
+                }
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                if (block.querySelector('#name') && block.querySelector('#tel')) {
+                    sendForm().then(() => {
+                        resetForm();
+                    });
+                } 
+                else if (i === stepsBlocks.length - 1) {
+                    resetForm();
+                } 
+                else {
+                    if (currentStep < stepsBlocks.length - 1) {
+                        showStep(currentStep + 1);
+                    }
+                }
+            });
+
+        }
+    });
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        sendForm();
+    });
+
+    function resetForm() {
+        form.reset();
+        stepsBlocks.forEach(block => {
+            block.classList.remove('active');
+            const inputs = block.querySelectorAll('input, select, textarea, button');
+            inputs.forEach(input => input.disabled = true);
+            inputs.forEach(input => {
+                input.classList.remove('filled');
+            });
+        });
+        steps.forEach(step => step.classList.remove('active'));
+        formImages.forEach(img => img.classList.remove('active'));
+        showStep(0);
+    }
+
+
+    showStep(0);
 });
 
 
@@ -335,6 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const headerProductsOpenClose = document.querySelectorAll('.header__products-open, .header__products-close');
     const headerProducts = document.querySelector('.header__products');
@@ -358,4 +435,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }); 
   
+});
+
+
+
+
+document.querySelectorAll('.stepsled__form-size input').forEach(input => {
+  input.addEventListener('input', () => {
+    if (input.value.trim() !== '') {
+      input.classList.add('filled');
+    } else {
+      input.classList.remove('filled');
+    }
+  });
 });
