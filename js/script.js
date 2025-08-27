@@ -30,6 +30,8 @@ function handleHeaderBlocks() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    if (typeof Swiper === "undefined") return;
+
     let whyledSlider = new Swiper(".whyled__slider", {
         loop: false,
         spaceBetween: 20,
@@ -81,6 +83,56 @@ document.addEventListener("DOMContentLoaded", function () {
         },
     });
 
+    let ourworksSlider = new Swiper(".ourworks__slider", {
+        loop: false,
+        spaceBetween: 20,
+        slidesPerView: 2,
+        navigation: {
+            nextEl: ".ourworks__slider-next",
+            prevEl: ".ourworks__slider-prev",
+        },
+        pagination: {
+            el: ".ourworks__slider-pagination",
+            clickable: true,  
+        },
+        breakpoints: {
+            1280: {
+                spaceBetween: 45,
+                slidesPerView: 3,
+            },
+        },
+    });
+
+    let teamSlider = new Swiper(".team__slider", {
+        loop: false,
+        spaceBetween: 20,
+        slidesPerView: 1.4,
+        navigation: {
+            nextEl: ".team__slider-next",
+            prevEl: ".team__slider-prev",
+        },
+        pagination: {
+            el: ".team__slider-pagination",
+            clickable: true,  
+        },
+        breakpoints: {
+            480: {
+                slidesPerView: 2,
+            },
+            768: {
+                slidesPerView: 3,
+            },
+            1000: {
+                spaceBetween: 30,
+                slidesPerView: 4,
+            },
+            1280: {
+                spaceBetween: 40,
+                slidesPerView: 4.2,
+            },
+        },
+    });
+
     let productionSlider = new Swiper(".production__slider", {
         loop: false,
         spaceBetween: 20,
@@ -91,45 +143,47 @@ document.addEventListener("DOMContentLoaded", function () {
         },
     });
 
-    const clientsSliderFirst = new Swiper(".clients__slider-first", {
-        loop: true,
-        slidesPerView: 'auto',
-        spaceBetween: 20,
-        freeMode: true,
-        freeModeMomentum: false,
-        speed: 5000,
-        breakpoints: {
-            1280: { spaceBetween: 40 }
-        }
-    });
+    if(document.querySelector('.clients__slider-first')){
+        const clientsSliderFirst = new Swiper(".clients__slider-first", {
+            loop: true,
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            freeMode: true,
+            freeModeMomentum: false,
+            speed: 5000,
+            breakpoints: {
+                1280: { spaceBetween: 40 }
+            }
+        });
 
-    const clientsSliderSecond = new Swiper(".clients__slider-second", {
-        loop: true,
-        slidesPerView: 'auto',
-        spaceBetween: 20,
-        freeMode: true,
-        freeModeMomentum: false,
-        speed: 5000,
-        breakpoints: {
-            1280: { spaceBetween: 40 }
-        }
-    });
-    function autoScroll(slider, direction = 1, speed = 0.5) {
-        let translate = 0;
-        let maxTranslate = slider.wrapperEl.scrollWidth / 2;
+        const clientsSliderSecond = new Swiper(".clients__slider-second", {
+            loop: true,
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            freeMode: true,
+            freeModeMomentum: false,
+            speed: 5000,
+            breakpoints: {
+                1280: { spaceBetween: 40 }
+            }
+        });
+        function autoScroll(slider, direction = 1, speed = 0.5) {
+            let translate = 0;
+            let maxTranslate = slider.wrapperEl.scrollWidth / 2;
 
-        function step() {
-            translate += speed * direction;
-            if (translate > maxTranslate) translate = 0;
-            if (translate < 0) translate = maxTranslate;
-            slider.setTranslate(-translate);
-            requestAnimationFrame(step);
-        }
+            function step() {
+                translate += speed * direction;
+                if (translate > maxTranslate) translate = 0;
+                if (translate < 0) translate = maxTranslate;
+                slider.setTranslate(-translate);
+                requestAnimationFrame(step);
+            }
 
-        step();
+            step();
+        }
+        autoScroll(clientsSliderFirst, 1, 0.5);
+        autoScroll(clientsSliderSecond, -1, 0.5);
     }
-    autoScroll(clientsSliderFirst, 1, 0.5);
-    autoScroll(clientsSliderSecond, -1, 0.5);
 });
 
 document.querySelectorAll('.types__selects-btn').forEach(button => {
@@ -148,60 +202,62 @@ document.querySelectorAll('.types__selects-btn').forEach(button => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const steps = document.querySelectorAll('.stepsled__line-num');
-    const stepsBlocks = document.querySelectorAll('.stepsled__form-block');
-    const form = document.querySelector('.stepsled__form');
-    let currentStep = 0;
+    if(document.querySelectorAll('.stepsled__form')){
+        const steps = document.querySelectorAll('.stepsled__line-num');
+        const stepsBlocks = document.querySelectorAll('.stepsled__form-block');
+        const form = document.querySelector('.stepsled__form');
+        let currentStep = 0;
 
-    function showStep(index) {
-        if (index < 0 || index >= stepsBlocks.length) return;
-        stepsBlocks.forEach((block, i) => {
-            const isActive = i === index;
-            block.classList.toggle('active', isActive);
-            const inputs = block.querySelectorAll('input, select, textarea, button');
-            inputs.forEach(input => {
-                input.disabled = !isActive;
+        function showStep(index) {
+            if (index < 0 || index >= stepsBlocks.length) return;
+            stepsBlocks.forEach((block, i) => {
+                const isActive = i === index;
+                block.classList.toggle('active', isActive);
+                const inputs = block.querySelectorAll('input, select, textarea, button');
+                inputs.forEach(input => {
+                    input.disabled = !isActive;
+                });
             });
+            steps.forEach((step, i) => {
+                step.classList.toggle('active', i <= index);
+            });
+            currentStep = index;
+        }
+
+        stepsBlocks.forEach((block) => {
+            const prevBtn = block.querySelector('.stepsled__form-prev');
+            const nextBtn = block.querySelector('.stepsled__form-next');
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    if (currentStep > 0) {
+                        showStep(currentStep - 1);
+                    }
+                });
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    if (currentStep < stepsBlocks.length - 1) {
+                        showStep(currentStep + 1);
+                    }
+                });
+            }
         });
-        steps.forEach((step, i) => {
-            step.classList.toggle('active', i <= index);
+        form?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            fetch('send.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.text())
+            .then(data => {
+                showStep(stepsBlocks.length - 1);
+            })
+            .catch(err => {});
         });
-        currentStep = index;
+        showStep(0);
     }
-
-    stepsBlocks.forEach((block) => {
-        const prevBtn = block.querySelector('.stepsled__form-prev');
-        const nextBtn = block.querySelector('.stepsled__form-next');
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                if (currentStep > 0) {
-                    showStep(currentStep - 1);
-                }
-            });
-        }
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                if (currentStep < stepsBlocks.length - 1) {
-                    showStep(currentStep + 1);
-                }
-            });
-        }
-    });
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-
-        fetch('send.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.text())
-        .then(data => {
-            showStep(stepsBlocks.length - 1);
-        })
-        .catch(err => {});
-    });
-    showStep(0);
 });
 
 
@@ -218,6 +274,7 @@ document.querySelectorAll('.reviews__slide-show').forEach(btn => {
     }
   });
 });
+
 
 document.querySelectorAll('.faq__item-title').forEach(title => {
     title.addEventListener('click', () => {
@@ -308,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
     });
-    form.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', (e) => {
         e.preventDefault();
         sendForm();
     });
