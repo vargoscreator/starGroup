@@ -6,7 +6,7 @@ if (typeof Swiper !== "undefined") {
         freeMode: true,
         watchSlidesProgress: true,
         breakpoints: {
-            481: {
+            480: {
                 spaceBetween: 20,
             },
         },
@@ -22,7 +22,7 @@ if (typeof Swiper !== "undefined") {
             swiper: thumbsSwiper,
         },
         breakpoints: {
-            481: {
+            480: {
                 spaceBetween: 20,
             },
         },

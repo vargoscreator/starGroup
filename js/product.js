@@ -18,13 +18,10 @@ if (typeof Swiper !== "undefined") {
                 clickable: true,
             },
             breakpoints: {
-                481: {
+                480: {
                     slidesPerView: 2,
                 },
-                1025: {
-                    slidesPerView: 2.4,
-                },
-                1281: {
+                768: {
                     spaceBetween: 28,
                     slidesPerView: 3.1,
                 },
