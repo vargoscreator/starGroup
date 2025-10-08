@@ -1267,17 +1267,17 @@ h1{
         max-width: 100%;
     }
     .populars__item-title {
-        font-size: 40px;
+        font-size: 28px;
     }
     .populars__item-descr {
-        font-size: 18px;
-        line-height: 26px;
+        font-size: 16px;
+        line-height: 20px;
         margin-top: 20px;
     }
     .populars__item-more {
         margin-top: 20px;
         gap: 10px;
-        font-size: 18px;
+        font-size: 16px;
     }
     .populars__item-more::after {
         width: 20px;
@@ -1317,7 +1317,12 @@ h1{
     }
 }
 @media (max-width: 479px) {
-
+    .populars__item-image{
+        height: 220px;
+    }
+    .populars__block{
+        gap: 80px;
+    }
 }
 /* banner */
 .banner{
@@ -1956,7 +1961,7 @@ h1{
 
     .stepsled__form-descr {
         margin-top: 5px;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .stepsled__form-select {
@@ -1974,7 +1979,7 @@ h1{
         border-radius: 60px;
         gap: 15px;
         padding: 15px 29px;
-        font-size: 18px;
+        font-size: 16px;
         height: 60px;
     }
 
